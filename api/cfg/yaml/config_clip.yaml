@@ -1,0 +1,5 @@
+src: assets/img/2
+dst: assets/test_folder/
+field_index: 1
+name: dakya
+shp: assets/shapefile/

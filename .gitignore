@@ -1,0 +1,6 @@
+streamlit-env/
+img/
+qgis/
+result*
+env/
+*.npy

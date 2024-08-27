@@ -1,0 +1,89 @@
+# file: vegetation_indices.yaml
+common:
+  nir_band: 8     # Băng tần cận hồng ngoại
+  red_band: 4     # Băng tần đỏ
+  blue_band: 2    # Băng tần xanh
+
+indices:
+  - name: NDVI
+    description: "Normalized Difference Vegetation Index"
+    bands:
+      nir: 8
+      red: 4
+
+  - name: EVI
+    description: "Enhanced Vegetation Index"
+    bands:
+      nir: 8
+      red: 4
+      blue: 2
+    parameters:
+      G: 2.5
+      C1: 6
+      C2: 7.5
+      L: 1
+
+  - name: SAVI
+    description: "Soil Adjusted Vegetation Index"
+    bands:
+      nir: 8
+      red: 4
+    parameters:
+      L: 0.5
+
+  - name: MSAVI
+    description: "Modified Soil Adjusted Vegetation Index"
+    bands:
+      nir: 8
+      red: 4
+
+  - name: GCI
+    description: "Green Chlorophyll Index"
+    bands:
+      nir: 8
+      green: 3
+
+  - name: RVI
+    description: "Ratio Vegetation Index"
+    bands:
+      nir: 8
+      red: 4
+
+  - name: DVI
+    description: "Difference Vegetation Index"
+    bands:
+      nir: 8
+      red: 4
+
+  - name: CCCI
+    description: "Crop Condition Index"
+    bands:
+      nir: 8
+      red: 4
+      blue: 2
+
+  - name: LAI
+    description: "Leaf Area Index"
+    bands:
+      nir: 8
+      red: 4
+
+  - name: FVC
+    description: "Fractional Vegetation Cover"
+    bands:
+      nir: 8
+      red: 4
+
+  - name: VCI
+    description: "Vegetation Condition Index"
+    bands:
+      nir: 8
+      red: 4
+
+  - name: VARI
+    description: "Visible Atmospherically Resistant Index"
+    bands:
+      green: 3
+      red: 4
+      blue: 2
+

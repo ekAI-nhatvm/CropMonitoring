@@ -1,0 +1,13 @@
+#points_csv: cfg/coordinate.csv # list of Points: (Long, Lat)
+output_folder: assets/img/namdinh 
+json_polygon: cfg/json/namdinh.json
+resolution: 10 # Unit: m
+credentials: # Config for Sentinel Hub
+  sh_instance_id: e081fa3d-6a05-452a-b6aa-61d08ae82bb8
+  sh_client_id: fec3398c-d918-4290-af40-08b8f42c0590
+  sh_client_secret: LtPROnAG7uY8gHFdfqoyZxLLsAV9Xe6p 
+  sh_base_url: https://services.sentinel-hub.com
+  sh_auth_base_url: https://services.sentinel-hub.com/oauth/token
+# Time range for downloading images
+start_date: '2020-01-01'
+end_date: '2023-12-31'
