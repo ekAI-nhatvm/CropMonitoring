@@ -61,7 +61,16 @@ class NDVIPreprocessing:
         except rasterio.errors.RasterioIOError as e:
             print(f"Error opening file {file_path}: {e}")
             return None
-       
+    
+    def make_S1_raster(self, file_path):
+        try:
+            with rasterio.open(file_path) as src:
+                VV_band = src.read(Sentinel1GRDData.VV)
+                VH_band = src.read(Sentinel1GRDData.VH)
+            return VV_band, VH_band
+        except rasterio.errors.RasterioIOError as e: 
+            print(f"Eroor openning file")  
+            
     def process_cloud_img(self, directory):
         ndvi_raster_list = []
         
@@ -130,15 +139,15 @@ class SplitTile():
 
             self.split_raster_to_tiles(img, tile_width=64, tile_height=64, output_dir=output_dir)
 
-if __name__ == '__main__':
-    test = NDVIPreprocessing()
-    ROOT_FOLDER = 'D:/Streamlit/api/assets/img'
-    #ndvi_raster = []
-    for folder_child in os.listdir(ROOT_FOLDER):
-        directory = f'{ROOT_FOLDER}/{folder_child}/S2L2A'
-        print(directory)
-        ndvi_raster_area = test.process_cloud_img(directory)
-        np.save(f'D:/Streamlit/api/assets/np/{folder_child}.npy',ndvi_raster_area)
+# if __name__ == '__main__':
+#     test = NDVIPreprocessing()
+#     ROOT_FOLDER = 'D:/Streamlit/api/assets/img'
+#     #ndvi_raster = []
+#     for folder_child in os.listdir(ROOT_FOLDER):
+#         directory = f'{ROOT_FOLDER}/{folder_child}/S2L2A'
+#         print(directory)
+#         ndvi_raster_area = test.process_cloud_img(directory)
+#         np.save(f'D:/Streamlit/api/assets/np/{folder_child}.npy',ndvi_raster_area)
         #ndvi_raster.append(ndvi_raster_area)
 
     #print(len(ndvi_raster))
