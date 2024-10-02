@@ -20,9 +20,10 @@ class NDVIPreprocessing:
     def ndvi_raster_img(self, file_path, red_num, nir_num):
         red_band, _ = self.read_band(file_path, red_num)
         nir_band, _ = self.read_band(file_path, nir_num)
-        if red_band is None or nir_band is None:
+        if red_band is None or nir_band is None or (nir_band + red_band) == 0:
             return None
-        ndvi = (nir_band - red_band) / (nir_band + red_band + 1e-10)
+        elif (nir_band + red_band) != 0:
+            ndvi = (nir_band - red_band) / (nir_band + red_band)
         return ndvi
 
     def create_dataset(self, directory):
@@ -45,7 +46,7 @@ class NDVIPreprocessing:
                 red_band, _ = self.read_band(file_path, Sentinel2L2AData.B04)
                 nir_band, _ = self.read_band(file_path, Sentinel2L2AData.B08)
                 
-                if red_band is None or nir_band is None:
+                if red_band is None or nir_band is None or (nir_band[x, y] + red_band[x, y])==0:
                     return None
                 
                 # Initialize ndvi_raster with the same shape as cloudy_prob
@@ -53,7 +54,7 @@ class NDVIPreprocessing:
                 for x in range(cloudy_prob.shape[0]):
                     for y in range(cloudy_prob.shape[1]):
                         if cloudy_prob[x, y] < 35:  # Assuming this is the correct condition
-                            ndvi_raster[x, y] = (nir_band[x, y] - red_band[x, y]) / (nir_band[x, y] + red_band[x, y] + 1e-10)
+                            ndvi_raster[x, y] = (nir_band[x, y] - red_band[x, y]) / (nir_band[x, y] + red_band[x, y])
                         else:
                             ndvi_raster[x, y] = None
             return ndvi_raster
@@ -139,15 +140,15 @@ class SplitTile():
 
             self.split_raster_to_tiles(img, tile_width=64, tile_height=64, output_dir=output_dir)
 
-# if __name__ == '__main__':
-#     test = NDVIPreprocessing()
-#     ROOT_FOLDER = 'D:/Streamlit/api/assets/img'
-#     #ndvi_raster = []
-#     for folder_child in os.listdir(ROOT_FOLDER):
-#         directory = f'{ROOT_FOLDER}/{folder_child}/S2L2A'
-#         print(directory)
-#         ndvi_raster_area = test.process_cloud_img(directory)
-#         np.save(f'D:/Streamlit/api/assets/np/{folder_child}.npy',ndvi_raster_area)
+if __name__ == '__main__':
+    test = NDVIPreprocessing()
+    ROOT_FOLDER = 'E:/EK_Intern/CropMonitoring/api/temp'
+    #ndvi_raster = []
+    for folder_child in os.listdir(ROOT_FOLDER)[4:]:
+        directory = f'{ROOT_FOLDER}/{folder_child}/S2L2A'
+        print(directory)
+        ndvi_raster_area = test.process_cloud_img(directory)
+        np.save(f'E:/EK_Intern/CropMonitoring/api/assets/np/{folder_child}.npy',ndvi_raster_area)
         #ndvi_raster.append(ndvi_raster_area)
 
     #print(len(ndvi_raster))

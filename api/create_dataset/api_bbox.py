@@ -22,11 +22,16 @@ import rasterio
 from rasterio.transform import from_bounds
 
 
+'''
+
+'''
 class SentinelHubProcessorPoint:
-    def __init__(self, config, name_collection):
+    def __init__(self, config, name_collection, geo_json, output_folder) :
         self.sh_config = self.init_sh_config(config["credentials"])
-        self.output_folder = config["output_folder"]
-        self.geo_json = config["json_polygon"]
+        #self.output_folder = config["output_folder"]
+        #self.geo_json = config["json_polygon"]
+        self.output_folder = output_folder
+        self.geo_json = geo_json
         self.resolution = config["resolution"]
         self.start_date = config["start_date"]
         self.end_date = config["end_date"]
@@ -44,6 +49,7 @@ class SentinelHubProcessorPoint:
         return sh_config
 
     def create_bbox(self):
+        #print(self.geo_json)
         geo_json = read_data(self.geo_json)
         area = shape(geo_json)
         bbox = BBox(area, crs=CRS.WGS84)
@@ -66,7 +72,7 @@ class SentinelHubProcessorPoint:
         function setup() {
             return {
                 input: [{
-                    bands: ["B01","B02","B03","B04","B05","B06","B07","B08","B8A","B09","B11","B12", "CLD", "SCL"],
+                    bands: ["B01","B02","B03","B04","B05","B06","B07","B08","B8A","B09","B11","B12", "CLD", "SCL",],
                     units: "DN"
                 }],
                 output: {
@@ -343,11 +349,24 @@ def main():
     args = parse_args()
     config = load_yaml_config(args.config)
     name_collection = args.collection
-    processor = SentinelHubProcessorPoint(config, name_collection)
-    time_start = datetime.datetime.now()
-    processor.process_single()
-    time_end = datetime.datetime.now()
-    print(f"All processing took {time_end - time_start}")
+    tmp = ['xuan_truong_nam_dinh', 'yen_dinh_th', 'yen_khanh_ninh_binh', 'yen_mo_ninh_binh', 'y_yen_nam_dinh']
+    #for json_file in os.listdir("E:/EK_Intern/CropMonitoring/api/cfg/json/data_new")[10:]:
+    for json_file in tmp:
+        area = json_file
+        json_file = area + ".json"   
+        output_folder = "E:/EK_Intern/CropMonitoring/api/assets/img/" + area
+        if not os.path.exists(output_folder):
+            os.mkdir(output_folder)
+        geo_json = "E:/EK_Intern/CropMonitoring/api/cfg/json/data_new/" + json_file
+        print(output_folder, geo_json)
+        try:
+            processor = SentinelHubProcessorPoint(config, name_collection, geo_json, output_folder)
+        except:
+            pass
+        time_start = datetime.datetime.now()
+        processor.process_single()
+        time_end = datetime.datetime.now()
+        print(f"All processing took {time_end - time_start}")
 
 
 if __name__ == "__main__":

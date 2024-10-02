@@ -1,11 +1,13 @@
 #points_csv: cfg/coordinate.csv # list of Points: (Long, Lat)
-output_folder: assets/img/thtb 
-json_polygon: cfg/json/tienhaiThaibinh.json
+#output_folder: assets/img/thtb 
+#json_polygon: cfg/json/tienhaiThaibinh.json
 resolution: 10 # Unit: m
 credentials: # Config for Sentinel Hub
   sh_instance_id: 1f411231-5320-411a-92c1-3eaff86ef0b4
-  sh_client_id: 1f411231-5320-411a-92c1-3eaff86ef0b4
-  sh_client_secret: Mk2k1YfmdBwJl6Lv2Y9JKIwMzzX8N7ie
+  #sh_client_id: 8dc0d5c3-7c9d-4184-8a45-11dda317fdf8
+  #sh_client_secret: qumS79KXxQZl1rDv3PwpghLwAuiQ3Gwg
+  sh_client_id: 513aac4c-8ea1-4158-be98-cc50cf8b9d13
+  sh_client_secret: RM8UkhheHzEsSUkV29xPuqBKqEvASj15
   sh_base_url: https://services.sentinel-hub.com
   sh_auth_base_url: https://services.sentinel-hub.com/oauth/token
 # Time range for downloading images
