@@ -46,14 +46,14 @@ class NDVIPreprocessing:
                 red_band, _ = self.read_band(file_path, Sentinel2L2AData.B04)
                 nir_band, _ = self.read_band(file_path, Sentinel2L2AData.B08)
                 
-                if red_band is None or nir_band is None or (nir_band[x, y] + red_band[x, y])==0:
+                if red_band is None or nir_band is None:
                     return None
                 
                 # Initialize ndvi_raster with the same shape as cloudy_prob
                 ndvi_raster = np.zeros(cloudy_prob.shape)
                 for x in range(cloudy_prob.shape[0]):
                     for y in range(cloudy_prob.shape[1]):
-                        if cloudy_prob[x, y] < 35:  # Assuming this is the correct condition
+                        if cloudy_prob[x, y] < 10 and (nir_band[x, y] + red_band[x, y])!=0:  # Assuming this is the correct condition
                             ndvi_raster[x, y] = (nir_band[x, y] - red_band[x, y]) / (nir_band[x, y] + red_band[x, y])
                         else:
                             ndvi_raster[x, y] = None
@@ -142,13 +142,13 @@ class SplitTile():
 
 if __name__ == '__main__':
     test = NDVIPreprocessing()
-    ROOT_FOLDER = 'E:/EK_Intern/CropMonitoring/api/temp'
+    ROOT_FOLDER = 'E:/EK_Intern/assets/img1'
     #ndvi_raster = []
     for folder_child in os.listdir(ROOT_FOLDER)[4:]:
         directory = f'{ROOT_FOLDER}/{folder_child}/S2L2A'
         print(directory)
         ndvi_raster_area = test.process_cloud_img(directory)
-        np.save(f'E:/EK_Intern/CropMonitoring/api/assets/np/{folder_child}.npy',ndvi_raster_area)
+        np.save(f'E:/EK_Intern/assets/np/{folder_child}.npy',ndvi_raster_area)
         #ndvi_raster.append(ndvi_raster_area)
 
     #print(len(ndvi_raster))
